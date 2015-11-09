@@ -116,8 +116,6 @@
   // Insert navbar if there's none
   var newNode = document.createElement('div');
   newNode.className = 'navbar navbar-default navbar-fixed-top';
-  newNode.className += markdownEl.getAttribute('edit') ? " edit" : '';
-  newNode.className += markdownEl.getAttribute('history') ? " history" : '';
   if (!navbarEl && titleEl) {
     newNode.innerHTML = '<div class="container">'+
                           '<div class="navbar-header">'+
@@ -128,18 +126,6 @@
                             '</button>'+
                             '<div class="navbar-brand" id="headline">Wiki</div>'+
                           '</div>'+
-                          '<div class="collapse navbar-collapse">'+
-                            '<ul class="nav navbar-nav navbar-right">'+
-                              (window.location.pathname != "/" ? '<li class="gohome-link"><a href="/">Go Home</a></li>' : '')+
-                              '<li class="history-link"><a href="?history">History</a></li>'+
-                              '<li class="edit-link"><a href="?edit">Edit</a></li>'+
-                              '<li class="dropdown">'+
-                                '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Themes <span class="caret"></span></a>'+
-                                '<ul class="dropdown-menu" id="theme">'+
-                                '</ul>'+
-                              '</li>'+
-                            '</ul>'+
-                          '</div>'+
                         '</div>';
     document.body.insertBefore(newNode, document.body.firstChild);
     var title = titleEl.innerHTML;
@@ -147,73 +133,12 @@
     if (headlineEl) {
       headlineEl.innerHTML = title;
     }
-
-    var themeEl = document.getElementById('theme');
-    if (themeEl) {
-      var themes = ['Chaitin', "Cerulean", "Cosmo", "Cyborg", "Darkly", "Flatly", "Journal", "Lumen", "Paper", "Readable", "Sandstone", "Simplex", "Slate", "Spacelab", "Superhero", "United", "Yeti"];
-      themes.forEach(function(val) {
-        if (val == 'Reset') {
-          var dvd = document.createElement("li");
-          dvd.setAttribute("class", "divider");
-          themeEl.appendChild(dvd);
-        }
-        var li = document.createElement("li");
-        var a = document.createElement("a");
-        setInnerText(a, val);
-        a.setAttribute('href', '#');
-        li.appendChild(a);
-        if(val.toLowerCase() == theme){
-            li.className = "active"
-        }
-        addEvent(a, 'click', function (e) {
-          var new_theme = val.toLowerCase()
-          upsertTheme(base, new_theme);
-          var actives = document.querySelectorAll("li.active");
-          [].forEach.call(actives, function(ele){
-            ele.className = "";
-          })
-          e.target.parentNode.className = "active";
-          store.set("theme", new_theme);
-        });
-        themeEl.appendChild(li);
-      });
-    }
-    var dropdown = document.getElementsByClassName("dropdown")[0],
-        toggleBtn = document.getElementsByClassName('navbar-toggle')[0],
-        menus = document.getElementsByClassName('navbar-collapse')[0];
-    if (themeEl && dropdown) {
-      addEvent(dropdown, 'click', function () {
-        if (dropdown.className.match(/(?:^|\s)open(?!\S)/)) {
-          dropdown.className = dropdown.className.replace(/(?:^|\s)open(?!\S)/g, '');
-        } else {
-          dropdown.className += " open";
-        }
-      });
-      addEvent(toggleBtn, 'click', function(){
-        var classList = menus.className.split(' ');
-        classList.indexOf('collapse') > -1 ? classList.splice(classList.indexOf('collapse') ,1) : classList.push('collapse');
-        menus.className = classList.join(' ');
-      });
-    }
   }
   var markdown = markdownEl.textContent || markdownEl.innerText,
       heading_number = markdownEl.getAttribute("heading_number"),
       show_toc = markdownEl.getAttribute("toc");
   render(newNode, markdown, theme, heading_number, show_toc);
 
-
-  var footer = document.getElementsByTagName("footer")[0];
-  if(footer){
-    if (footer.className.indexOf("footer") < 0){
-      footer.innerHTML += '<div>Powered By: <a href="//github.com/chaitin/strapdown-zeta">Strapdown-Zeta</a></div>';
-      footer.className = "footer container"
-    }
-  }else{
-    footer = document.createElement("footer")
-    footer.innerHTML = '<div>Powered By: <a href="//github.com/chaitin/strapdown-zeta">Strapdown-Zeta</a></div>';
-    footer.className = "footer container";
-    document.body.appendChild(footer)
-  }
   // All done - show body
   document.body.style.display = '';
 })(window, document);
