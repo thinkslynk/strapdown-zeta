@@ -119,11 +119,6 @@
   if (!navbarEl && titleEl) {
     newNode.innerHTML = '<div class="container">'+
                           '<div class="navbar-header">'+
-                            '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav" aria-expand="false">'+
-                              '<span class="icon-bar"></span>'+
-                              '<span class="icon-bar"></span>'+
-                              '<span class="icon-bar"></span>'+
-                            '</button>'+
                             '<div class="navbar-brand" id="headline">Wiki</div>'+
                           '</div>'+
                         '</div>';
